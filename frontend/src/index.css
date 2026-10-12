@@ -1,0 +1,110 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  font-family: "Inter", sans-serif;
+}
+
+/* Faint paper-grain texture for the felt hero, via inline SVG noise */
+.felt-grain {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+}
+
+/* ---------- Split-flap ticker (signature element) ---------- */
+.flap-window {
+  position: relative;
+  overflow: hidden;
+  height: 1em;
+  line-height: 1;
+}
+.flap-track {
+  transition: transform 900ms steps(10, end);
+}
+.flap-window::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 1px;
+  background: rgba(0, 0, 0, 0.35);
+  transform: translateY(-0.5px);
+  pointer-events: none;
+}
+
+/* ---------- Stamp-slam entrance for the "LIVE" eyebrow ---------- */
+@keyframes stampIn {
+  0% {
+    opacity: 0;
+    transform: scale(2.4) rotate(-8deg);
+  }
+  60% {
+    opacity: 1;
+    transform: scale(0.92) rotate(-8deg);
+  }
+  80% {
+    transform: scale(1.04) rotate(-8deg);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(-8deg);
+  }
+}
+.animate-stamp {
+  animation: stampIn 700ms cubic-bezier(0.2, 0.8, 0.2, 1) 200ms both;
+}
+
+/* ---------- Fade-up reveal for catalogue cards ---------- */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.reveal {
+  opacity: 0;
+}
+.reveal.in-view {
+  animation: fadeUp 600ms ease-out both;
+}
+
+/* ---------- Closing-soon marquee ---------- */
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+.marquee-track {
+  animation: marquee 28s linear infinite;
+}
+.marquee-row:hover .marquee-track {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .flap-track {
+    transition: none !important;
+  }
+  .animate-stamp {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: rotate(-8deg) !important;
+  }
+  .reveal {
+    opacity: 1 !important;
+  }
+  .reveal.in-view {
+    animation: none !important;
+  }
+  .marquee-track {
+    animation: none !important;
+  }
+}
